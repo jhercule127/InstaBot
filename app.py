@@ -1,10 +1,34 @@
 from instapy import InstaPy 
+from instapy import smart_run
+from instapy import set_workplace
 import argparse
+import schedule 
+import time 
+import datetime
+
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-username")
 parser.add_argument("-password")
 parser.add_argument("-clarifai_api",default="N/A")
+parser.add_argument("-interval",default="weekly")
+parser.add_argument("-time",default="12:00pm")
+
+
+def instagram_job():
+  session.login()
+  with smart_run():
+    session.like_by_tags(['elsalvador'],amount=100)
+    session.dont_like(['naked','nsfw'])
+    session.set_do_follow(True,percentage=5)
+    session.set_relationship_bounds(enabled=True, max_followers=7500)
+
+    if CLARIFAI_API != "N/A":
+        session.set_use_clarifai(enabled=True, api_key=CLARIFAI_API)
+        session.clarifai_check_img_for(['nsfw'])
+
+    session.end()
 
 
 if __name__ == "__main__":
@@ -12,17 +36,17 @@ if __name__ == "__main__":
     USERNAME = args.username 
     PASSWROD = args.password
     CLARIFAI_API = args.clarifai_api
+    INTERVAL = args.interval
+    TIME = args.time
+    today = datetime.datetime.today().strftime('%A').lower()
 
+    
     session = Instapy(username=USERNAME,password=PASSWROD)
-    session.login()
-    session.like_by_tags(['elsalvador'],amount=100)
-    session.dont_like(['naked','nsfw'])
-    session.set_do_follow(True,percentage=5)
-    session.set_relationship_bounds(enabled=True, max_followers=7500)
+
+    if INTERVAL == "weekly"
+        schedule.every().today.at(TIME).do(instagram_job)
 
 
-    if CLARIFAI_API != "N/A":
-        session.set_use_clarifai(enabled=True, api_key='<your_api_key>')
-        session.clarifai_check_img_for(['nsfw'])
-
-    session.end()
+    while True:
+    schedule.run_pending()
+    time.sleep(10)
