@@ -38,15 +38,20 @@ if __name__ == "__main__":
     CLARIFAI_API = args.clarifai_api
     INTERVAL = args.interval
     TIME = args.time
-    today = datetime.datetime.today().strftime('%A').lower()
 
     
     session = Instapy(username=USERNAME,password=PASSWROD)
 
-    if INTERVAL == "weekly"
-        schedule.every().today.at(TIME).do(instagram_job)
+    try:
+        if INTERVAL == "weekly"
+            today = datetime.datetime.today().strftime('%A').lower()
+            schedule.every().today.at(TIME).do(instagram_job)
+        elif INTERVAL == "daily":
+            schedule.every().day.at(TIME).do(instagram_job)
+    else Exception as e:
+        print(e)
 
 
     while True:
-    schedule.run_pending()
-    time.sleep(10)
+        schedule.run_pending()
+        time.sleep(10)
