@@ -1,16 +1,14 @@
 from instapy import InstaPy 
 from instapy import smart_run
-from instapy import set_workplace
 import argparse
 import schedule 
 import time 
 import datetime
 
 
-
 parser = argparse.ArgumentParser()
-parser.add_argument("-username")
-parser.add_argument("-password")
+parser.add_argument("-u")
+parser.add_argument("-p")
 parser.add_argument("-clarifai_api",default="N/A")
 parser.add_argument("-interval",default="weekly")
 parser.add_argument("-time",default="12:00pm")
@@ -30,28 +28,37 @@ def instagram_job():
 
     session.end()
 
+def validate_time(timestr):
+    try:
+        if time.strptime(timestr,'%I:%M%p')
+        return True
+    except ValueError:
+        argparse.ArgumentTypeError(timestr + ' is not a proper date string')
+        return False
+
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    USERNAME = args.username 
-    PASSWROD = args.password
+    USERNAME = args.u 
+    PASSWORD = args.p
     CLARIFAI_API = args.clarifai_api
     INTERVAL = args.interval
     TIME = args.time
 
-    
-    session = Instapy(username=USERNAME,password=PASSWROD)
-
+    correct_time = validate_time(TIME)
+    session = InstaPy(username=USERNAME,password=PASSWORD)
     try:
-        if INTERVAL == "weekly"
+
+        if INTERVAL == "weekly" and correct_time:
             today = datetime.datetime.today().strftime('%A').lower()
             schedule.every().today.at(TIME).do(instagram_job)
-        elif INTERVAL == "daily":
+        elif INTERVAL == "daily" and correct_time:
             schedule.every().day.at(TIME).do(instagram_job)
-    else Exception as e:
+    except Exception as e:
         print(e)
-
 
     while True:
         schedule.run_pending()
         time.sleep(10)
+
+
