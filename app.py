@@ -7,8 +7,8 @@ import datetime
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-u")
-parser.add_argument("-p")
+parser.add_argument("-u",required=True)
+parser.add_argument("-p",required=True)
 parser.add_argument("-clarifai_api",default="N/A")
 parser.add_argument("-interval",default="weekly")
 parser.add_argument("-time",default="12:00pm")
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     correct_time = validate_time(TIME)
     
-    session = InstaPy(username=USERNAME,password=PASSWORD)
+    session = InstaPy(username=USERNAME,password=PASSWORD,bypass_security_challenge_using='sms')
     
     try:
         if INTERVAL == "weekly":
