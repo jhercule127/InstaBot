@@ -30,12 +30,10 @@ def instagram_job():
 
 def validate_time(timestr):
     try:
-        if time.strptime(timestr,'%I:%M%p')
-        return True
-    except ValueError:
-        argparse.ArgumentTypeError(timestr + ' is not a proper date string')
-        return False
-
+        new_time = datetime.datetime.strptime(timestr,"%I:%M%p")
+        return new_time.strftime("%H:%M%p")[:-2]
+    except ValueError as e:
+        print("Value Error: {}".format(e))
 
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -46,19 +44,22 @@ if __name__ == "__main__":
     TIME = args.time
 
     correct_time = validate_time(TIME)
-    session = InstaPy(username=USERNAME,password=PASSWORD)
+    
+    #session = InstaPy(username=USERNAME,password=PASSWORD)
+    
     try:
-
-        if INTERVAL == "weekly" and correct_time:
+        if INTERVAL == "weekly":
             today = datetime.datetime.today().strftime('%A').lower()
-            schedule.every().today.at(TIME).do(instagram_job)
+            #schedule.every().today.at(correct_time).do(instagram_job)
         elif INTERVAL == "daily" and correct_time:
-            schedule.every().day.at(TIME).do(instagram_job)
+            print(correct_time)
+            #schedule.every().day.at(correct_time).do(instagram_job)
     except Exception as e:
         print(e)
 
+    '''
     while True:
         schedule.run_pending()
         time.sleep(10)
-
-
+    '''
+    
